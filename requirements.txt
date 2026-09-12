@@ -48,6 +48,10 @@ pandas
 jupyter
 ipykernel
 
+# Graph Visualization
+# ==============================
+grandalf
+
 # ==============================
 # Evaluation & Observability
 # ==============================
