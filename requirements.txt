@@ -1,0 +1,60 @@
+# ==============================
+# Core LangChain
+# ==============================
+langchain
+langchain-core
+langchain-community
+
+# ==============================
+# Google Gemini
+# ==============================
+langchain-google-genai
+google-generativeai
+
+# ==============================
+# Environment & Configuration
+# ==============================
+python-dotenv
+
+# ==============================
+# Document Loading & Processing
+# ==============================
+pypdf
+python-docx
+beautifulsoup4
+unstructured
+
+# ==============================
+# Embeddings & Vector Stores
+# ==============================
+faiss-cpu
+chromadb
+
+# ==============================
+# Web / HTTP
+# ==============================
+requests
+httpx
+
+# ==============================
+# Data Processing
+# ==============================
+numpy
+pandas
+
+# ==============================
+# Jupyter / Interactive Learning
+# ==============================
+jupyter
+ipykernel
+
+# ==============================
+# Evaluation & Observability
+# ==============================
+langsmith
+
+# ==============================
+# Utilities
+# ==============================
+tiktoken
+
