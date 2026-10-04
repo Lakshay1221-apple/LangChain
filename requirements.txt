@@ -4,6 +4,7 @@
 langchain
 langchain-core
 langchain-community
+langchain-text-splitters
 
 # ==============================
 # Google Gemini
@@ -61,4 +62,4 @@ langsmith
 # Utilities
 # ==============================
 tiktoken
-
+langchain-huggingface sentence-transformers

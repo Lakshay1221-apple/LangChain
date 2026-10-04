@@ -1,2 +1,14 @@
+# Environment
 .env
-data/
+
+# RAG source documents
+src/rag/data/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.cpython-*
+*.so
+*.dylib
