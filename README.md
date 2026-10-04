@@ -1,78 +1,145 @@
-# LangChain Learning Notebooks
+# LangChain & Advanced Hybrid RAG Ecosystem
 
-A small, notebook-based playground for learning LangChain with Google Gemini. The examples progress from direct model usage and messages to LCEL chains, sequential workflows, and parallel branches.
+A comprehensive repository showcasing modern LLM application development using **LangChain**, **LangChain Expression Language (LCEL)**, and a production-ready **Hybrid Retrieval-Augmented Generation (RAG)** pipeline.
 
-## What Is Covered
+---
 
-- Initializing Google Gemini chat models with LangChain
-- System, human, and AI messages
-- Prompt templates and LCEL composition with the `|` operator
-- String parsing and structured model output
-- Tool calling
-- Sequential chains that pass one result into the next step
-- Parallel chains that produce multiple results before merging them
-- Generating article content and an image prompt from source text
+## Architecture Overview
+
+```
+LangChain Project
+├── src/rag/                        # Advanced Hybrid RAG Pipeline
+│   ├── ingestion/                  # Document Loaders, Cleaners & Chunkers
+│   ├── embeddings/                 # HuggingFace Embeddings & ChromaDB Vector Store
+│   ├── retrieval/                  # BM25, Dense Vector, Hybrid Fusion & FlashRank Reranker
+│   ├── generation/                 # Groq LLM Integration & Prompt Engineering
+│   ├── pipeline/                   # End-to-End RAG Pipeline Orchestration
+│   ├── config.py                   # Centralized Configuration
+│   └── main.py                     # CLI & Application Entry Point
+└── src/langchain/                  # Core LangChain & LCEL Learning Suite
+    ├── models_langchain.ipynb      # Models, Structured Output & Tool Calling
+    ├── messages_langchain.ipynb    # Chat Message Sequences & History
+    ├── chains_langchain.ipynb      # LCEL Fundamentals
+    ├── sequential_chain.ipynb      # Multi-step Sequential Workflows
+    ├── parallel_chain.ipynb        # Parallel Execution with RunnableParallel
+    ├── document_loaders.ipynb      # Document Loading Strategies
+    ├── output_parser_langchain.ipynb # Pydantic & Output Parsing
+    ├── langchain_cal_tool.ipynb    # Agent Tools & Function Calling
+    └── langchain_context.ipynb     # Context Injection & Processing
+```
+
+---
+
+## Key Features
+
+### 1. Production-Grade Hybrid RAG Pipeline (`src/rag/`)
+- **Multi-Source Ingestion & Sanitization**: Automated loading of unstructured PDFs and TXT files, rule-based text cleaning, metadata enrichment, and chunking with `RecursiveCharacterTextSplitter`.
+- **Dense & Sparse Hybrid Retrieval**:
+  - **Dense Vector Search**: Powered by `BAAI/bge-small-en-v1.5` embeddings and persistent `ChromaDB`.
+  - **Sparse Keyword Search**: BM25 retriever utilizing `rank-bm25`.
+  - **Reciprocal Rank Fusion**: Weighted ensemble retrieval balancing semantic similarity and exact keyword relevance.
+- **Cross-Encoder Reranking**: Ultra-fast reranking using FlashRank (`ms-marco-MiniLM-L-12-v2`) to eliminate false positives and noise from multi-document collections.
+- **Deduplication & Grounded Generation**: Content-level deduplication prevents context clutter; grounded system prompts ensure accurate answers with zero hallucinations via Groq's high-throughput LLMs.
+
+### 2. LangChain & LCEL Interactive Suite (`src/langchain/`)
+- Hands-on Jupyter notebooks covering foundational to advanced LangChain concepts.
+- LCEL composition patterns using the pipe (`|`) operator.
+- Deterministic vs. creative model routing, structured Pydantic output parsing, and dynamic tool calling.
+
+---
 
 ## Requirements
 
-- Python 3.12 or newer
-- Jupyter, or VS Code with the Jupyter extension
-- A Google Gemini API key
+- **Python**: 3.12+
+- **Package Manager**: `uv` or `pip`
+- **API Keys**:
+  - [Groq API Key](https://console.groq.com/) (for RAG pipeline generation)
+  - [Google Gemini API Key](https://aistudio.google.com/) (for notebook workflows)
 
-## Setup
+---
 
-1. Create and activate a virtual environment.
+## Quick Start & Setup
 
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate
-   ```
+### 1. Clone & Environment Setup
 
-2. Install the dependencies.
+```bash
+# Clone the repository
+git clone https://github.com/Lakshay1221-apple/LangChain.git
+cd LangChain
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Configure your Gemini API key before running a notebook.
-
-   ```bash
-   export GOOGLE_API_KEY="your-api-key"
-   ```
-
-   Do not commit API keys to the repository. The notebooks may also prompt for a key when the environment variable is not set.
-
-4. Open a notebook in Jupyter or VS Code and run its cells from top to bottom.
-
-## Notebook Guide
-
-| Notebook | Focus |
-| --- | --- |
-| [`models_langchain.ipynb`](models_langchain.ipynb) | Model initialization, messages, tool calling, and structured output |
-| [`messages_langchain.ipynb`](messages_langchain.ipynb) | Creating and sending chat message sequences |
-| [`chains_langchain.ipynb`](chains_langchain.ipynb) | A basic LCEL prompt-model-parser chain |
-| [`sequential_chain.ipynb`](sequential_chain.ipynb) | Passing the output of one prompt into the next prompt |
-| [`parallel_chain.ipynb`](parallel_chain.ipynb) | Running independent branches with `RunnableParallel` and merging their results |
-| [`langchain_1.ipynb`](langchain_1.ipynb) | Content workflow for titles, SEO descriptions, paragraph editing, and image prompts |
-
-## Content Workflow
-
-The content notebook uses two Gemini configurations: a deterministic model for consistent transformations and a more creative model for titles and edits. It produces:
-
-- An article title
-- An SEO-friendly description
-- Structured paragraph feedback and an edited paragraph
-- A text prompt for an external image-generation model
-
-The final output is only an image prompt; no image is generated by this project. Model names and API behavior can change, so select a currently supported Gemini model if `gemini-2.5-flash` is unavailable.
-
-## Project Structure
-
-```text
-.
-├── *.ipynb              # Interactive LangChain examples
-├── requirements.txt     # Notebook and integration dependencies
-├── pyproject.toml       # Python project metadata
-├── src/langchain/       # Package source
-└── README.md            # Project documentation
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
+
+### 2. Install Dependencies
+
+Using `uv` (recommended):
+```bash
+uv sync
+```
+
+Or using standard `pip`:
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+GROQ_API_KEY=your_groq_api_key_here
+GOOGLE_API_KEY=your_google_api_key_here
+```
+
+---
+
+## Running the Hybrid RAG System
+
+Run the RAG pipeline directly with the default query or pass your own question via CLI:
+
+```bash
+# Run with default query
+python -m src.rag.main
+
+# Run with a custom query
+python -m src.rag.main "What were the major experiences during Elon Musk's childhood?"
+```
+
+### RAG Configuration (`src/rag/config.py`)
+
+Key parameters can be customized in `src/rag/config.py`:
+
+| Parameter | Default | Description |
+|---|---|---|
+| `EMBEDDING_MODEL` | `BAAI/bge-small-en-v1.5` | HuggingFace embedding model |
+| `CHUNK_SIZE` | `500` | Target chunk size in characters |
+| `CHUNK_OVERLAP` | `50` | Overlap between consecutive chunks |
+| `VECTOR_TOP_K` | `15` | Candidates retrieved via dense vector search |
+| `BM25_TOP_K` | `15` | Candidates retrieved via BM25 sparse search |
+| `RERANK_MODEL` | `ms-marco-MiniLM-L-12-v2` | FlashRank cross-encoder reranker model |
+| `RERANK_TOP_N` | `5` | Top reranked passages passed to LLM context |
+| `MODEL_NAME` | `openai/gpt-oss-20b` | Groq chat model for grounded response generation |
+
+---
+
+## Interactive Notebook Guide
+
+| Notebook | Topic & Focus |
+|---|---|
+| [`models_langchain.ipynb`](src/langchain/models_langchain.ipynb) | Model initialization, temperature control, chat messages, and structured outputs |
+| [`messages_langchain.ipynb`](src/langchain/messages_langchain.ipynb) | Working with `SystemMessage`, `HumanMessage`, `AIMessage`, and message history |
+| [`chains_langchain.ipynb`](src/langchain/chains_langchain.ipynb) | Fundamental LCEL prompt-to-model-to-parser pipelines |
+| [`sequential_chain.ipynb`](src/langchain/sequential_chain.ipynb) | Chaining multiple prompts sequentially where output feeds subsequent inputs |
+| [`parallel_chain.ipynb`](src/langchain/parallel_chain.ipynb) | Multi-branch parallel execution using `RunnableParallel` |
+| [`document_loaders.ipynb`](src/langchain/document_loaders.ipynb) | Loading text, PDF, and web documents into LangChain Document formats |
+| [`output_parser_langchain.ipynb`](src/langchain/output_parser_langchain.ipynb) | Pydantic and JSON output parsers for guaranteed structured schemas |
+| [`langchain_cal_tool.ipynb`](src/langchain/langchain_cal_tool.ipynb) | Function calling and tool definitions for AI agents |
+| [`langchain_context.ipynb`](src/langchain/langchain_context.ipynb) | Dynamic context injection and prompt composition |
+
+---
+
+## License
+
+This project is licensed under the MIT License.
