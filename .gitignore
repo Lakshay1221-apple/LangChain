@@ -12,3 +12,5 @@ __pycache__/
 *.cpython-*
 *.so
 *.dylib
+
+chroma_db/

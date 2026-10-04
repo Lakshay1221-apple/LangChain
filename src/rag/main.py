@@ -7,10 +7,14 @@ if __package__:
     from .ingestion.loader import load_documents
     from .ingestion.cleaner import clean_documents
     from .ingestion.chunker import chunk_documents
+    from .embeddings.embedder import create_embedding_model
+    from .embeddings.vector_store import create_vector_store
 else:
     from ingestion.loader import load_documents
     from ingestion.cleaner import clean_documents
     from ingestion.chunker import chunk_documents
+    from embeddings.embedder import create_embedding_model
+    from embeddings.vector_store import create_vector_store
 
 
 def main() -> None:
@@ -86,6 +90,21 @@ def main() -> None:
         print(chunk.page_content[:500])
         print("\nMetadata:")
         print(chunk.metadata)
+
+    # ---------------------------------------------------------
+    # 7. EMBEDDINGS AND VECTOR STORE
+    # ---------------------------------------------------------
+    embedding_model = create_embedding_model()
+    vector_store_path = Path(__file__).resolve().parent / "chroma_db"
+    vector_store = create_vector_store(
+        chunks,
+        embedding_model,
+        str(vector_store_path),
+    )
+
+    stored_vectors = vector_store.get()["ids"]
+    print(f"\nVectors stored: {len(stored_vectors)}")
+    print(f"Vector store path: {vector_store_path}")
 
 
 if __name__ == "__main__":
