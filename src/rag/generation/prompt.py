@@ -1,7 +1,5 @@
 """Prompt construction utilities."""
 
-"""Prompt templates for the RAG pipeline."""
-
 from langchain_core.prompts import ChatPromptTemplate
 
 

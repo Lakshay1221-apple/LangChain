@@ -5,11 +5,15 @@ from langchain_core.documents import Document
 
 
 
-def create_reranker(top_n : int = 5) -> FlashrankRerank:
+def create_reranker(
+    top_n: int = 5,
+    model_name: str = "ms-marco-MiniLM-L-12-v2",
+) -> FlashrankRerank:
     """Create and return a reranker instance."""
 
     reranker = FlashrankRerank(
-        top_n = top_n
+        model=model_name,
+        top_n=top_n,
     )
 
     return reranker
